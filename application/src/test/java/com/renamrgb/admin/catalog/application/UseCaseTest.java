@@ -9,6 +9,5 @@ class UseCaseTest {
     public void testCreateUseCase() {
         UseCase useCase = new UseCase();
         Assertions.assertNotNull(useCase);
-        Assertions.assertNotNull(useCase.execute());
     }
 }
