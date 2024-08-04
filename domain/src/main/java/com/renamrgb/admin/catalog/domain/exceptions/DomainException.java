@@ -4,17 +4,21 @@ import com.renamrgb.admin.catalog.domain.validation.Error;
 
 import java.util.List;
 
-public class DomainException extends RuntimeException {
+public class DomainException extends NoStacktraceException {
 
     private final List<Error> errors;
 
-    private DomainException(List<Error> errors) {
-        super("", null, true, false);
+    private DomainException(final String message, final List<Error> errors) {
+        super(message);
         this.errors = errors;
     }
 
-    public static DomainException with(List<Error> errors) {
-        return new DomainException(errors);
+    public static DomainException with(final Error aError) {
+        return new DomainException(aError.message(), List.of(aError));
+    }
+
+    public static DomainException with(final List<Error> anErrors) {
+        return new DomainException("", anErrors);
     }
 
     public List<Error> getErrors() {
