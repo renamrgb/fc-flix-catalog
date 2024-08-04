@@ -1,6 +1,7 @@
 package com.renamrgb.admin.catalog.domain.category;
 
 import com.renamrgb.admin.catalog.domain.AggregateRoot;
+import com.renamrgb.admin.catalog.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 
@@ -35,9 +36,14 @@ public class Category extends AggregateRoot<CategoryID> {
         final String aDescription,
         final boolean aISActive
     ) {
-        var id = CategoryID.unique();
-        var now = Instant.now();
+        final var id = CategoryID.unique();
+        final var now = Instant.now();
         return new Category(id, aName, aDescription, aISActive, now, now, null);
+    }
+
+    @Override
+    public void validate(ValidationHandler aHandler) {
+        CategoryValidator.with(this, aHandler).validate();
     }
 
     public CategoryID getId() {

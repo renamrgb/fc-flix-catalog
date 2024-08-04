@@ -1,5 +1,7 @@
 package com.renamrgb.admin.catalog.domain.category;
 
+import com.renamrgb.admin.catalog.domain.exceptions.DomainException;
+import com.renamrgb.admin.catalog.domain.validation.handler.ThrowsValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -20,5 +22,18 @@ class CategoryTest {
         Assertions.assertNotNull(actualCategory.getCreatedAt());
         Assertions.assertNotNull(actualCategory.getUpdatedAt());
         Assertions.assertNull(actualCategory.getDeletedAt());
+    }
+
+    @Test
+    void givenAnInvalidNullName_whenCallNewCategory_thenShouldReceiveError() {
+        final String expectedName = null;
+        final var expectedDescription = "Filme description";
+        final var expectedIsActive = true;
+        final var actualCategory = Category.newCategory(expectedName, expectedDescription, expectedIsActive);
+
+        final var actualException = Assertions.assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowsValidationHandler()));
+
+        Assertions.assertEquals(1, actualException.getErrors().size());
+        Assertions.assertEquals("'name' should not be null", actualException.getErrors().get(0).message());
     }
 }
