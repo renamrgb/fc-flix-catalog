@@ -6,6 +6,8 @@ import com.renamrgb.admin.catalog.domain.validation.Validator;
 
 public class CategoryValidator extends Validator {
 
+    private static final int NAME_MIN_LENGTH = 3;
+    private static final int NAME_MAXLENGTH = 255;
     private final Category category;
 
     private CategoryValidator(final Category aCategory, final ValidationHandler handler) {
@@ -36,7 +38,7 @@ public class CategoryValidator extends Validator {
 
         final int nameLength = name.trim().length();
 
-        if (nameLength > 255 || nameLength < 3) {
+        if (nameLength > NAME_MAXLENGTH || nameLength < NAME_MIN_LENGTH) {
             this.validationHandler().append(new Error("'name' must be between 3 and 255"));
         }
     }
